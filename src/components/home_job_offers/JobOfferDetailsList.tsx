@@ -44,8 +44,8 @@ const WorkLocations: React.FC<{ jobOffer: JobOfferListedDTO }> = ({
     <FontAwesomeIcon icon={faLocationDot} />
     <ul className="flex">
       {jobOffer.workLocations.map((location, index) => (
-        <li key={location}>
-          {location.toUpperCase()}
+        <li key={index}>
+          {`${location.city.toUpperCase()}, ${location.country.toUpperCase()}`}
           {index !== jobOffer.workLocations.length - 1 && (
             <span className="mx-1">/</span>
           )}

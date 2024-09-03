@@ -39,6 +39,14 @@ const buildURL = (params: QueryParams) => {
         url += "maxOpensIn=" + params.maxOpensIn + "&";
     }
 
+    if (params.cities && params.cities.join(',') !== defaultQueryParams.cities.join(',')) {
+        url += "cities=" + params.cities.join(',') + "&";
+    }
+
+    if (params.countries && params.countries.join(',') !== defaultQueryParams.countries.join(',')) {
+        url += "countries=" + params.countries.join(',') + "&";
+    }
+
     if ((params.page) && params.page !== defaultQueryParams.page) {
         url += "page=" + params.page + "&";
     }

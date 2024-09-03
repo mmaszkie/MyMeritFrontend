@@ -73,6 +73,7 @@ const useAuthProvider = () => {
           decodedTokenInfo: decodedToken,
           accessToken: response.data.token,
           isCompany: decodedToken.role.toUpperCase() !== "USER",
+          userId: decodedToken.sub,
         };
         setUser(userInfo);
         setCookie("user", userInfo, { path: "/" });
@@ -181,6 +182,7 @@ const useAuthProvider = () => {
         decodedTokenInfo: decodedToken,
         accessToken: token,
         isCompany: decodedToken.role.toUpperCase() !== "USER",
+        userId: decodedToken.sub,
       };
 
       setUser(userInfo);
@@ -251,6 +253,7 @@ const useAuthProvider = () => {
     userData,
     setUserData,
     accessToken: user ? user.accessToken : null,
+    userId: user ? user.userId : undefined,
     isAuthenticated,
     isAuthenticatedCompany,
     signIn,

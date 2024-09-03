@@ -18,6 +18,9 @@ const FilterPanel: React.FC<{
     "Kotlin",
   ]);
 
+  const [countryInput, setCountryInput] = useState<string>("");
+  const [cityInput, setCityInput] = useState<string>("");
+
   useEffect(() => {
     let URL = buildURL(queryParams);
     if (URL.charAt(URL.length - 1) === "&") {
@@ -46,6 +49,47 @@ const FilterPanel: React.FC<{
 
   const isSelected = (language: string) => {
     return queryParams.languages?.includes(language);
+  };
+
+
+  const handleCityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCityInput(e.target.value);
+  };
+
+  const addCity = () => {
+    if (cityInput && !queryParams.cities?.includes(cityInput)) {
+      const updatedCities = queryParams.cities
+          ? [...queryParams.cities, cityInput]
+          : [cityInput];
+      handleFilterChange("cities", updatedCities);
+      setCityInput("");
+    }
+  };
+
+  const removeCity = (city: string) => {
+    const updatedCities = queryParams.cities?.filter((c) => c !== city);
+    handleFilterChange("cities", updatedCities);
+  };
+
+  const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCountryInput(e.target.value);
+  };
+
+  const addCountry = () => {
+    if (countryInput && !queryParams.countries?.includes(countryInput)) {
+      const updatedCountries = queryParams.countries
+          ? [...queryParams.countries, countryInput]
+          : [countryInput];
+      handleFilterChange("countries", updatedCountries);
+      setCountryInput("");
+    }
+  };
+
+  const removeCountry = (country: string) => {
+    const updatedCountries = queryParams.countries?.filter(
+        (c) => c !== country
+    );
+    handleFilterChange("countries", updatedCountries);
   };
 
   return (
@@ -81,31 +125,107 @@ const FilterPanel: React.FC<{
               </label>
               <div className="flex flex-wrap text-sm font-medium">
                 {languages.map((language) => (
-                  <button
-                    onClick={() => toggleLanguage(language)}
-                    key={language}
-                    className={
-                      "px-4 py-2 rounded mr-2 mb-2 " +
-                      (isSelected(language)
-                        ? "border-2 border-emerald-400 text-emerald-300"
-                        : "bg-main-lighter-2 border-2 border-main-lighter-2")
-                    }
-                  >
-                    {language}
-                  </button>
+                    <button
+                        onClick={() => toggleLanguage(language)}
+                        key={language}
+                        className={
+                            "px-4 py-2 rounded mr-2 mb-2 " +
+                            (isSelected(language)
+                                ? "border-2 border-emerald-400 text-emerald-300"
+                                : "bg-main-lighter-2 border-2 border-main-lighter-2")
+                        }
+                    >
+                      {language}
+                    </button>
                 ))}
+              </div>
+            </div>
+            <div className="flex flex-col lg:items-start">
+              <label className="pb-2.5 lg:pb-2 text-sm font-medium">
+                Countries
+              </label>
+              <div className="flex flex-col text-sm font-medium">
+                <div className="flex">
+                  <input
+                      type="text"
+                      value={countryInput}
+                      onChange={handleCountryInputChange}
+                      className="px-4 py-2 rounded mr-2 mb-0 bg-main-lighter-2 border-2 border-main-lighter-2"
+                      placeholder="Add a country"
+                  />
+                  <button
+                      onClick={addCountry}
+                      className="px-4 py-2 rounded bg-success-color text-white"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap mt-2">
+                  {queryParams.countries?.map((country) => (
+                      <div
+                          key={country}
+                          className="px-4 py-2 rounded mr-2 mb-2 border-2 border-emerald-400 text-emerald-300 flex items-center"
+                      >
+                        {country}
+                        <button
+                            onClick={() => removeCountry(country)}
+                            className="ml-2 text-bg-main-lighter-2 hover:text-red-800"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col lg:items-start">
+              <label className="pb-2.5 lg:pb-2 text-sm font-medium">
+                Cities
+              </label>
+              <div className="flex flex-col text-sm font-medium">
+                <div className="flex">
+                  <input
+                      type="text"
+                      value={cityInput}
+                      onChange={handleCityInputChange}
+                      className="px-4 py-2 rounded mr-2 mb-0 bg-main-lighter-2 border-2 border-main-lighter-2"
+                      placeholder="Add a city"
+                  />
+                  <button
+                      onClick={addCity}
+                      className="px-4 py-2 rounded bg-success-color text-white"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap mt-2">
+                  {queryParams.cities?.map((city) => (
+                      <div
+                          key={city}
+                          className="px-4 py-2 rounded mr-2 mb-2 border-2 border-emerald-400 text-emerald-300 flex items-center"
+                      >
+                        {city}
+                        <button
+                            onClick={() => removeCity(city)}
+                            className="ml-2 text-bg-main-lighter-2 hover:text-red-800"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="flex flex-col pt-2 text-sm pb-2 lg:justify-center lg:items-stretch">
               <RangeInput
-                label="Merit Credits"
-                min={0}
-                max={1000}
-                minValue={queryParams.minCredits}
-                maxValue={queryParams.maxCredits}
-                onInputChange={(e) =>
-                  handleFilterChange("minCredits", e.minValue)
-                }
+                  label="Merit Credits"
+                  min={0}
+                  max={1000}
+                  minValue={queryParams.minCredits}
+                  maxValue={queryParams.maxCredits}
+                  onInputChange={(e) =>
+                      handleFilterChange("minCredits", e.minValue)
+                  }
               />
             </div>
             <div className="flex flex-col pt-2 pb-2 lg:items-stretch">
@@ -113,11 +233,11 @@ const FilterPanel: React.FC<{
                 Opens From
               </label>
               <input
-                type="date"
-                className="outline-none mt-1 p-2 px-3 w-[100%] rounded bg-main-lighter-2"
-                onChange={(e) =>
-                  handleFilterChange("minOpensIn", e.target.value)
-                }
+                  type="date"
+                  className="outline-none mt-1 p-2 px-3 w-[100%] rounded bg-main-lighter-2"
+                  onChange={(e) =>
+                      handleFilterChange("minOpensIn", e.target.value)
+                  }
               />
             </div>
             <div className="flex flex-col pt-2 pb-2 lg:items-stretch">
@@ -125,41 +245,41 @@ const FilterPanel: React.FC<{
                 Opens To
               </label>
               <input
-                type="date"
-                className="outline-none mt-1 p-2 px-3 w-[100%] rounded bg-main-lighter-2"
-                onChange={(e) =>
-                  handleFilterChange("maxOpensIn", e.target.value)
-                }
+                  type="date"
+                  className="outline-none mt-1 p-2 px-3 w-[100%] rounded bg-main-lighter-2"
+                  onChange={(e) =>
+                      handleFilterChange("maxOpensIn", e.target.value)
+                  }
               />
             </div>
             <div className="flex flex-col pt-2 text-sm pb-2 lg:justify-center lg:items-stretch">
               <RangeInput
-                label="Salary"
-                min={0}
-                max={40000}
-                minValue={queryParams.minSalary}
-                maxValue={queryParams.maxSalary}
-                currency="$"
-                onInputChange={(e) =>
-                  handleFilterChange("minSalary", e.minValue)
-                }
+                  label="Salary"
+                  min={0}
+                  max={40000}
+                  minValue={queryParams.minSalary}
+                  maxValue={queryParams.maxSalary}
+                  currency="$"
+                  onInputChange={(e) =>
+                      handleFilterChange("minSalary", e.minValue)
+                  }
               />
             </div>
           </div>
           <button
-            className={
-              "w-[100%] m-auto bg-emerald-400 text-sm mt-5 font-semibold rounded p-3 " +
-              (isPopupOpen ? "" : "hidden")
-            }
-            onClick={togglePopup}
+              className={
+                  "w-[100%] m-auto bg-emerald-400 text-sm mt-5 font-semibold rounded p-3 " +
+                  (isPopupOpen ? "" : "hidden")
+              }
+              onClick={togglePopup}
           >
             FILTER
           </button>
         </div>
       </div>
       <button
-        className="lg:hidden w-full text-center appearance-none text-sm font-medium outline-none py-3 rounded bg-secondary-bg-color"
-        onClick={togglePopup}
+          className="lg:hidden w-full text-center appearance-none text-sm font-medium outline-none py-3 rounded bg-secondary-bg-color"
+          onClick={togglePopup}
       >
         {isPopupOpen ? "HIDE FILTERS" : "SHOW FILTERS"}
       </button>

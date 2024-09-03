@@ -145,7 +145,7 @@ const TaskStep = ({
           </>
         ) : (
           <>
-            <span>Show advance</span>
+            <span>Show advanced</span>
             <FontAwesomeIcon icon={faChevronDown} />
           </>
         )}

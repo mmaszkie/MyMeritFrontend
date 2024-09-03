@@ -96,7 +96,7 @@ const getJobOfferById = async (
 export const testAll = async (
   files: MyFile[],
   taskId: string,
-  language: string
+  language: string,
 ) => {
   try {
     const data = new FormData();
@@ -136,7 +136,7 @@ export const testSingle = async (
   files: MyFile[],
   taskId: string,
   language: string,
-  testIndex: number
+  testIndex: number,
 ) => {
   try {
     const data = new FormData();

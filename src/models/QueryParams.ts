@@ -9,6 +9,8 @@ class QueryParams {
     search: string;
     sort: string;
     page: number;
+    cities: string[];
+    countries: string[];
 
     constructor(
         languages: string[] = [],
@@ -24,8 +26,9 @@ class QueryParams {
             const date = new Date();
             date.setFullYear(date.getFullYear() + 1);
             return date;
-        })()
-
+        })(),
+        cities: string[] = [],
+        countries: string[] = []
     ) {
         this.languages = languages;
         this.minCredits = minCredits;
@@ -37,6 +40,8 @@ class QueryParams {
         this.search = search;
         this.sort = sort;
         this.page = page;
+        this.cities = cities;
+        this.countries = countries;
     }
 }
 

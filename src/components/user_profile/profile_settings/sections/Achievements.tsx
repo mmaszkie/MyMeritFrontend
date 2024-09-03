@@ -10,11 +10,11 @@ const Achievements = () => {
 
   return (
     <ProfileSettingsSection title="Your achievements">
-      <div className="h-24">
+      <div>
         {isLoading || !userData ? (
-          <Skeleton height={96} />
+          <Skeleton height={96} count={3} />
         ) : (
-          <p className="text-lg h-full flex flex-row flex-wrap gap-4 items-center overflow-hidden">
+          <div className="text-lg h-full flex flex-row flex-wrap gap-4 items-center overflow-hidden">
             {userData.achievements.length > 0 ? (
               userData.achievements.map(
                 (achievement: AchievementType, index: number) => (
@@ -24,7 +24,7 @@ const Achievements = () => {
             ) : (
               <span className="opacity-50">No achievements yet</span>
             )}
-          </p>
+          </div>
         )}
       </div>
     </ProfileSettingsSection>

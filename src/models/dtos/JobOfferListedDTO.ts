@@ -1,10 +1,11 @@
 import { User } from "../../types";
 import { Experience } from "@types";
+import WorkLocation from "../WorkLocation.ts";
 
 interface JobOfferListedDTO {
   id: string;
   jobTitle: string;
-  workLocations: string[];
+  workLocations: WorkLocation[];
   technologies: string[];
   reward: number;
   opensAt: Date;

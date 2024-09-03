@@ -5,6 +5,7 @@ export type CookieUser = {
   decodedTokenInfo: JwtDecodedToken;
   accessToken: string;
   isCompany: boolean;
+  userId: string;
 };
 
 export type JwtDecodedToken = {
@@ -36,6 +37,7 @@ export type AuthContextType = {
   userData: User | undefined;
   setUserData: (userData: User) => void;
   accessToken: string | null;
+  userId: string | undefined;
   isAuthenticated: () => boolean;
   isAuthenticatedCompany: () => boolean;
   signIn: ({ email, password }: UserSignIn) => boolean;

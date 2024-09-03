@@ -13,7 +13,7 @@ import FeedbackMessage from "../../components/job_offer_details/task_info/Feedba
 const TaskSolutionDetails: React.FC = () => {
   const { id: jobOfferId } = useParams<{ id: string }>();
   const [jobOffer, setJobOffer] = useState<JobOfferDetailsDTO | null>(null);
-  const { accessToken } = useAuth();
+  const { accessToken, userId } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +42,13 @@ const TaskSolutionDetails: React.FC = () => {
     return <Navigate to={`/job/${jobOfferId}`} />;
   }
 
+  console.log("Rendering TaskSolutionDetails");
+  console.log("userId:", userId);
+  console.log("jobOfferId:", jobOfferId);
+  console.log("jobOffer:", jobOffer);
+  console.log("task:", task);
+  console.log("feedback:", feedback);
+  console.log("solutions:", solutions);
   return (
     <div className="flex flex-col gap-3 lg:flex-row mx-auto h-full lg:h-[calc(100vh-120px)] h-full">
       <div className="h-full flex flex-col h-full flex-1 mb-4 lg:mb-0">
@@ -70,6 +77,7 @@ const TaskSolutionDetails: React.FC = () => {
           jobId={jobOfferId!}
           task={task}
           isEditable={task.status === TaskStatus.OPEN}
+          userId={userId!}
         />
       )}
     </div>

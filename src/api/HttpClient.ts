@@ -59,27 +59,90 @@ export async function httpCall<HttpResponse>({
 }
 
 export async function httpCallWithAuthorization<Data>({
-  token,
-  url,
-  method,
-  body,
-}: HttpCallWithAuthorizationParams): Promise<Data> {
-  const headers = {
+                                                        token,
+                                                        url,
+                                                        method,
+                                                        body,
+                                                      }: HttpCallWithAuthorizationParams): Promise<Data> {
+  const headers: HeadersInit = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
   };
 
-  const response = await fetch(url, {
-    method: method,
-    headers,
-    credentials: "include",
-    body: JSON.stringify(body),
-  });
-
-  if (response.status >= 500) {
-    errorToast("Server error. Please try again later.");
-    return {} as Data;
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
-  return await response.json();
+  if (body) {
+    console.log("Request Body:", JSON.stringify(body, null, 2));
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: method,
+      headers,
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+
+    console.log("Response Status:", response.status);
+    console.log("Response Headers:", response.headers);
+
+    if (response.status >= 500) {
+      errorToast("Server error. Please try again later.");
+      return {} as Data;
+    }
+
+    const contentType = response.headers.get("content-type");
+    console.log("Content-Type:", contentType);
+
+    if (contentType && contentType.includes("application/json")) {
+      const jsonData = await response.json();
+      console.log("Parsed JSON Data:", jsonData);
+      return jsonData;
+    } else {
+      console.warn("Response is not JSON or is empty");
+      return {} as Data;
+    }
+  } catch (error) {
+    errorToast("Network error. Please check your connection and try again.");
+    console.error("Fetch error:", error);
+    return {} as Data;
+  }
 }
+
+// export async function httpCallWithAuthorization<Data>({
+//   token,
+//   url,
+//   method,
+//   body,
+// }: HttpCallWithAuthorizationParams): Promise<Data> {
+//   const headers = {
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${token}`,
+//   };
+//
+//   try {
+//     const response = await fetch(url, {
+//       method: method,
+//       headers,
+//       credentials: "include",
+//       body: JSON.stringify(body),
+//     });
+//
+//     if (response.status >= 500) {
+//       errorToast("Server error. Please try again later.");
+//       return {} as Data;
+//     }
+//
+//     const contentType = response.headers.get("content-type");
+//     if (contentType && contentType.includes("application/json")) {
+//       return await response.json();
+//     } else {
+//       return {} as Data;
+//     }
+//   } catch (error) {
+//     errorToast("Network error. Please check your connection and try again.");
+//     console.error("Fetch error:", error);
+//     return {} as Data;
+//   }
+// }

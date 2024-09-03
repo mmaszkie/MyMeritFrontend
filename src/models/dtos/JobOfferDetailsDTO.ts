@@ -3,6 +3,7 @@ import { EmploymentType, Experience } from "../JobOffer";
 // import JobOfferListedDTO from "./SolutionListedDTO";
 import SolutionListedDTO from "./SolutionListedDTO";
 import { User } from "@types";
+import WorkLocation from "../WorkLocation.ts";
 
 interface JobOfferDetailsDTO {
   id: string;
@@ -13,7 +14,7 @@ interface JobOfferDetailsDTO {
   employmentType: EmploymentType;
   requiredSkills: string[];
   preferredSkills: string[];
-  workLocations: string[];
+  workLocations: WorkLocation[];
   opensAt: Date;
   closesAt: Date;
   company: User;

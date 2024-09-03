@@ -49,8 +49,9 @@ const TaskSolutionWorkspace: React.FC<{
   jobId: string;
   task: UserTaskDTO;
   isEditable: boolean;
-}> = ({ jobId, task, isEditable }) => {
-  const { accessToken } = useAuth();
+  userId : string;
+}> = ({ jobId, task, isEditable, userId }) => {
+  const { accessToken} = useAuth();
   const [currentLanguage, setCurrentLanguage] = useState<string>(
     task.templateFiles && Object.keys(task.templateFiles).length > 0
       ? Object.keys(transformByLanguages(task.templateFiles))[0]
@@ -123,7 +124,7 @@ const TaskSolutionWorkspace: React.FC<{
             "main." +
               languageToExtension[
                 currentLanguage.toLowerCase()
-              ] /* do zmiany */,
+              ],
             ContentType.TXT,
             ""
           ),
@@ -137,12 +138,12 @@ const TaskSolutionWorkspace: React.FC<{
   useEffect(() => {
     if (filesFetched) {
       cookies.set(
-        jobId + "-" + currentLanguage,
+        jobId + "-" + currentLanguage + "-" + userId,
         serializeFiles(files, jobId, mainFileIndex, currentLanguage),
         { expires: new Date(task.closesAt) }
       );
     }
-  }, [files, jobId, filesFetched, mainFileIndex]);
+  }, [files, jobId, filesFetched, mainFileIndex, userId]);
 
   const submit = () => {
     const id = loadingToast("Submitting your solution...");
@@ -155,7 +156,7 @@ const TaskSolutionWorkspace: React.FC<{
             files,
             accessToken,
             currentLanguage,
-            files[mainFileIndex].name
+            files[mainFileIndex].name,
           );
           if (response.ok) {
             successToast("Submitted successfully!", id.toString());

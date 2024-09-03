@@ -15,6 +15,7 @@ import {
 } from "../../../services/JobOfferService";
 import { successToast } from "../../../main";
 import { Link } from "react-router-dom";
+import MapComponent from "./MapComponent.tsx";
 
 const JobOfferInfo: React.FC<{ jobOffer: JobOfferDetailsDTO }> = ({
   jobOffer,
@@ -104,13 +105,13 @@ const JobOfferInfo: React.FC<{ jobOffer: JobOfferDetailsDTO }> = ({
                 <FontAwesomeIcon icon={faDollarSign} /> {jobOffer.salary}$/month
               </p>
 
-              {jobOffer.workLocations.map((location) => (
+              {jobOffer.workLocations.map((location, index) => (
                 <p
-                  key={location}
+                  key={index}
                   className="flex justify-center items-center gap-2 bg-task-bck px-3 py-1.5 rounded text-sm font-semibold"
                 >
                   <FontAwesomeIcon icon={faLocationDot} />
-                  {location}
+                  {`${location.city}, ${location.country}`}
                 </p>
               ))}
             </div>
@@ -153,6 +154,9 @@ const JobOfferInfo: React.FC<{ jobOffer: JobOfferDetailsDTO }> = ({
             })}
           </ul>
         </div>
+      </div>
+      <div className="mt-5">
+        <MapComponent locations={jobOffer.workLocations} />
       </div>
     </div>
   );
